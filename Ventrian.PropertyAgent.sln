@@ -7,27 +7,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Ventrian.PropertyAgent.SqlD
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Ventrian.PropertyAgent", "Ventrian.PropertyAgent.vbproj", "{57AD424D-D2A3-440F-8FA8-4B2B03B95545}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "http://www.ventrian.it", "http://www.ventrian.it", "{229E8CD2-03D6-4822-A67D-F0D00C28C853}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
-		Debug.AspNetCompiler.VirtualPath = "/www.ventrian.it"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\Ventrian\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\www.ventrian.it\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/www.ventrian.it"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\Ventrian\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\www.ventrian.it\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\..\..\Ventrian\"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

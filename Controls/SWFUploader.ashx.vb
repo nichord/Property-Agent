@@ -58,7 +58,8 @@ Namespace Ventrian.PropertyAgent.Controls
                     HttpContext.Current.Items("UserInfo") = objUser
 
                     Dim objRoleController As New RoleController
-                    roles = objRoleController.GetRolesByUser(_userID, _portalID)
+                    'roles = objRoleController.GetRolesByUser(_userID, _portalID)
+                    roles = objRoleController.GetUserRoles(objUser, True)
 
                     Dim strPortalRoles As String = Join(roles, New Char() {";"c})
                     _context.Items.Add("UserRoles", ";" + strPortalRoles + ";")
@@ -172,10 +173,11 @@ Namespace Ventrian.PropertyAgent.Controls
 
         Public Function CheckLimit(ByVal context As HttpContext, ByVal permission As String, ByVal permissionLimit As String) As Boolean
 
-            Dim objUser As UserInfo = UserController.GetCurrentUserInfo()
+            Dim objUser As UserInfo = UserController.Instance.GetCurrentUserInfo()
 
             Dim objRoleController As New RoleController
-            Dim userRoles As String() = objRoleController.GetRolesByUser(objUser.UserID, objUser.PortalID)
+
+            Dim userRoles As String() = objRoleController.GetUserRoles(objUser, True)
 
             Dim limit As Integer = Null.NullInteger
 

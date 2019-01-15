@@ -145,7 +145,6 @@ Namespace Ventrian.PropertyAgent
 
                     UploadPhotoStandard1.Visible = (Me.PropertySettings.UploadMode = UploadType.Standard)
                     UploadPhotoSWF1.Visible = (Me.PropertySettings.UploadMode = UploadType.Flash)
-
                 End If
 
             Catch exc As Exception    'Module failed to load

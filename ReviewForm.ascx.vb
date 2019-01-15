@@ -233,11 +233,11 @@ Namespace Ventrian.PropertyAgent
 
                             For Each email As String In PropertySettings.ReviewEmail.Split(","c)
                                 Try
-                                    DotNetNuke.Services.Mail.Mail.SendMail(PortalSettings.Email, email, "", "", _
-                                       DotNetNuke.Services.Mail.MailPriority.Normal, _
-                                       subject, _
-                                       DotNetNuke.Services.Mail.MailFormat.Text, System.Text.Encoding.UTF8, body, _
-                                       "", PortalSettings.HostSettings("SMTPServer"), PortalSettings.HostSettings("SMTPAuthentication"), PortalSettings.HostSettings("SMTPUsername"), PortalSettings.HostSettings("SMTPPassword"))
+                                    DotNetNuke.Services.Mail.Mail.SendMail(PortalSettings.Email, email, "", "",
+                                       DotNetNuke.Services.Mail.MailPriority.Normal,
+                                       subject,
+                                       DotNetNuke.Services.Mail.MailFormat.Text, System.Text.Encoding.UTF8, body,
+                                       "", DotNetNuke.Entities.Host.Host.SMTPServer, DotNetNuke.Entities.Host.Host.SMTPAuthentication, DotNetNuke.Entities.Host.Host.SMTPUsername, DotNetNuke.Entities.Host.Host.SMTPPassword)
 
                                 Catch
                                 End Try

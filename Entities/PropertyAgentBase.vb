@@ -2,6 +2,7 @@ Imports System.ComponentModel
 Imports DotNetNuke.Common.Utilities
 Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Security
+Imports DotNetNuke.Security.Permissions
 Imports DotNetNuke.Services.Localization
 
 Namespace Ventrian.PropertyAgent
@@ -173,9 +174,11 @@ Namespace Ventrian.PropertyAgent
 
         Protected ReadOnly Property IsEditor() As Boolean
             Get
+                Dim objModuleController As ModuleController = New ModuleController
+                Dim objModule As ModuleInfo = objModuleController.GetModule(ModuleId, TabId)
                 Return _
-                        (PortalSecurity.IsInRoles(Me.ModuleConfiguration.AuthorizedEditRoles) = True) Or _
-                        (PortalSecurity.IsInRoles(PortalSettings.ActiveTab.AdministratorRoles) = True) Or _
+                        (PortalSecurity.IsInRoles(ModulePermissionController.CanEditModuleContent(objModule) = True)) Or
+                        (PortalSecurity.IsInRoles(TabPermissionController.CanAdminPage) = True) Or
                         (PortalSecurity.IsInRoles(PortalSettings.AdministratorRoleName) = True)
             End Get
         End Property

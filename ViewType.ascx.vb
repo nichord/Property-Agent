@@ -940,7 +940,7 @@ Namespace Ventrian.PropertyAgent
                                 If (Request(PropertySettings.SEOAgentType) <> "") Then
                                     If (Request(PropertySettings.SEOAgentType).ToLower() = "viewtype") Then
                                         If (PropertySettings.SEOViewTypeTitle <> "") Then
-                                            If DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") = "Y" Then
+                                            If DotNetNuke.Entities.Controllers.HostController.Instance.GetString("UseFriendlyUrls") = "Y" Then
                                                 If (PropertySettings.SEOViewTypeTitle <> "") Then
 
                                                     Dim objTypeController As New PropertyTypeController()

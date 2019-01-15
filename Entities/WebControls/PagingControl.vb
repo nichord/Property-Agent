@@ -265,7 +265,7 @@ Namespace Ventrian.PropertyAgent
 
             If QuerystringParams <> "" Then
 
-                If DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") = "Y" Then
+                If DotNetNuke.Entities.Controllers.HostController.Instance.GetString("UseFriendlyUrls") = "Y" Then
 
                     Dim strURL As String = ApplicationURL(_TabID)
                     Dim settings As PortalSettings = PortalController.GetCurrentPortalSettings

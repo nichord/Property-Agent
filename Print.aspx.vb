@@ -1,5 +1,6 @@
 Imports DotNetNuke.Common
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Entities.Host
 Imports DotNetNuke.Entities.Modules
 
 Imports System.IO
@@ -75,7 +76,7 @@ Namespace Ventrian.PropertyAgent
                         Else
                             objCSSCache(ID) = ""
                         End If
-                        If Not Globals.PerformanceSetting = Globals.PerformanceSettings.NoCaching Then
+                        If Not Host.PerformanceSetting = Globals.PerformanceSettings.NoCaching Then
                             DataCache.SetCache("CSS", objCSSCache)
                         End If
                     End If
@@ -96,7 +97,7 @@ Namespace Ventrian.PropertyAgent
                         Else
                             objCSSCache(ID) = ""
                         End If
-                        If Not Globals.PerformanceSetting = Globals.PerformanceSettings.NoCaching Then
+                        If Not Host.PerformanceSetting = Globals.PerformanceSettings.NoCaching Then
                             DataCache.SetCache("CSS", objCSSCache)
                         End If
                     End If

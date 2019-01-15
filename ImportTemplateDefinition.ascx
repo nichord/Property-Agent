@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register TagPrefix="Agent" TagName="Options" Src="Options.ascx" %>
+
 <table cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td align="left">
@@ -31,7 +32,7 @@
 		<TD width="25"><IMG height=1 src='<%= Page.ResolveUrl("~/Images/Spacer.gif") %>' width=25></TD>
 		<TD class="SubHead" noWrap width="150"><dnn:label id="plFile" runat="server" resourcekey="File" suffix=":" controlname="txtFolder"></dnn:label></TD>
 		<TD align="left" width="100%">
-			<INPUT id="cmdBrowse" type="file" size="50" name="cmdBrowse" runat="server">
+			<INPUT id="cmdBrowse" type="file" size="50" name="cmdBrowse" runat="server" >
 			<asp:CustomValidator id="valFile" runat="server" resourcekey="valFile.ErrorMessage" CssClass="NormalRed"
 				ErrorMessage="You Must Upload A File" Display="Dynamic"></asp:CustomValidator>
 			<asp:CustomValidator id="valType" runat="server" resourcekey="valType.ErrorMessage" CssClass="NormalRed"

@@ -369,7 +369,7 @@ Namespace Ventrian.PropertyAgent
                                            DotNetNuke.Services.Mail.MailPriority.Normal,
                                            subject,
                                            DotNetNuke.Services.Mail.MailFormat.Text, System.Text.Encoding.UTF8, body,
-                                           "", PortalSettings.HostSettings("SMTPServer"), PortalSettings.HostSettings("SMTPAuthentication"), PortalSettings.HostSettings("SMTPUsername"), DotNetNuke.Entities.Host.Host.SMTPPassword)
+                                           "", DotNetNuke.Entities.Host.Host.SMTPServer, DotNetNuke.Entities.Host.Host.SMTPAuthentication, DotNetNuke.Entities.Host.Host.SMTPUsername, DotNetNuke.Entities.Host.Host.SMTPPassword)
 
                                     Catch
                                     End Try
@@ -404,7 +404,7 @@ Namespace Ventrian.PropertyAgent
                                            DotNetNuke.Services.Mail.MailPriority.Normal,
                                            subject,
                                            DotNetNuke.Services.Mail.MailFormat.Text, System.Text.Encoding.UTF8, body,
-                                           "", PortalSettings.HostSettings("SMTPServer"), PortalSettings.HostSettings("SMTPAuthentication"), PortalSettings.HostSettings("SMTPUsername"), PortalSettings.HostSettings("SMTPPassword"))
+                                           "", DotNetNuke.Entities.Host.Host.SMTPServer, DotNetNuke.Entities.Host.Host.SMTPAuthentication, DotNetNuke.Entities.Host.Host.SMTPUsername, DotNetNuke.Entities.Host.Host.SMTPPassword)
 
                                     Catch
                                     End Try
@@ -438,7 +438,7 @@ Namespace Ventrian.PropertyAgent
                                        DotNetNuke.Services.Mail.MailPriority.Normal,
                                        subject,
                                        DotNetNuke.Services.Mail.MailFormat.Text, System.Text.Encoding.UTF8, body,
-                                       "", PortalSettings.HostSettings("SMTPServer"), PortalSettings.HostSettings("SMTPAuthentication"), PortalSettings.HostSettings("SMTPUsername"), PortalSettings.HostSettings("SMTPPassword"))
+                                       "", DotNetNuke.Entities.Host.Host.SMTPServer, DotNetNuke.Entities.Host.Host.SMTPAuthentication, DotNetNuke.Entities.Host.Host.SMTPUsername, DotNetNuke.Entities.Host.Host.SMTPPassword)
 
                                 Catch
                                 End Try

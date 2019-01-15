@@ -2,8 +2,6 @@ Imports DotNetNuke.Common
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
-Imports ICSharpCode.SharpZipLib.Zip
-
 Imports System.IO
 Imports System.Xml
 
@@ -58,55 +56,24 @@ Namespace Ventrian.PropertyAgent
             Dim fileName As String = ExtractFileName(cmdBrowse.PostedFile.FileName)
             Dim folder As String = fileName.Replace(".zip", "")
 
-            Dim unzip As New ZipInputStream(cmdBrowse.PostedFile.InputStream)
 
-            Dim entry As ZipEntry = unzip.GetNextEntry()
+            ' create the actual file folder which includes any relative filepath info
+            Dim fileFolder As String = Globals.ApplicationMapPath & "\DesktopModules\PropertyAgent\Templates\" & folder
+            If Not Directory.Exists(fileFolder) Then
+                Directory.CreateDirectory(fileFolder)
+            End If
 
-            While Not (entry Is Nothing)
-                If Not entry.IsDirectory Then
 
-                    Dim name As String = ""
-                    Dim path As String = ""
-                    Dim buffer() As Byte
+            Dim zip = New TemplateZipUtils()
 
-                    Dim s As String = entry.Name
-                    Dim i As Integer = s.LastIndexOf("\"c)
-                    If (i < 0) Then
-                        i = s.LastIndexOf("/"c)
-                    End If
-                    If i < 0 Then
-                        name = s.Substring(0, s.Length)
-                        path = ""
-                    Else
-                        name = s.Substring(i + 1, s.Length - (i + 1))
-                        path = s.Substring(0, i)
-                    End If
 
-                    buffer = New [Byte](Convert.ToInt32(entry.Size) - 1) {}
-                    Dim size As Integer = 0
-                    While size < buffer.Length
-                        size += unzip.Read(buffer, size, buffer.Length - size)
-                    End While
+            Dim uploadedFiles As HttpFileCollection = Request.Files
+            If uploadedFiles IsNot Nothing AndAlso uploadedFiles(0).ContentLength > 0 Then
+                Dim filestream As Stream = uploadedFiles(0).InputStream
+                zip.UnzipTemplateFiles(filestream, Globals.ApplicationMapPath & "\DesktopModules\PropertyAgent\Templates\")
+            End If
 
-                    ' create the actual file folder which includes any relative filepath info
-                    Dim fileFolder As String = System.IO.Path.Combine(Globals.ApplicationMapPath & "\DesktopModules\PropertyAgent\Templates\" & folder, path)
-                    If Not Directory.Exists(fileFolder) Then
-                        Directory.CreateDirectory(fileFolder)
-                    End If
 
-                    ' save file
-                    Dim FullFileName As String = System.IO.Path.Combine(fileFolder, name)
-
-                    If System.IO.File.Exists(FullFileName) Then
-                        System.IO.File.SetAttributes(FullFileName, FileAttributes.Normal)
-                    End If
-                    Dim fs As New FileStream(FullFileName, FileMode.Create, FileAccess.Write)
-                    fs.Write(buffer, 0, buffer.Length)
-                    fs.Close()
-
-                End If
-                entry = unzip.GetNextEntry
-            End While
 
             Dim objTemplate As New TemplateInfo
 
@@ -153,8 +120,11 @@ Namespace Ventrian.PropertyAgent
         Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
 
             Try
-
                 BindCrumbs()
+
+                If DotNetNuke.Framework.AJAX.IsInstalled Then
+                    DotNetNuke.Framework.AJAX.RegisterPostBackControl(cmdUploadFile)
+                End If
 
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)
@@ -166,7 +136,6 @@ Namespace Ventrian.PropertyAgent
         Private Sub cmdUploadFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdUploadFile.Click
 
             Try
-
                 If (Page.IsValid) Then
                     ImportTemplate()
                 End If
@@ -203,6 +172,8 @@ Namespace Ventrian.PropertyAgent
                     End If
                 End If
                 args.IsValid = False
+
+
 
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)

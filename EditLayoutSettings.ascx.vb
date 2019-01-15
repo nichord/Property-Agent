@@ -1,5 +1,6 @@
 Imports DotNetNuke.Common
 Imports DotNetNuke.Common.Utilities
+Imports DotNetNuke.Entities.Tabs
 Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
@@ -149,7 +150,7 @@ Namespace Ventrian.PropertyAgent
                 If (value = DestinationType.PropertyOwner) Then
                     li.Selected = True
                 End If
-                lstContactDestination.Items.Add(li)
+                lstContactdestination.Items.Add(li)
             Next
 
         End Sub
@@ -183,12 +184,14 @@ Namespace Ventrian.PropertyAgent
                 End If
             Next
             drpBindExpiry.Items.Insert(0, New ListItem(Localization.GetString("NotSpecified", Me.LocalResourceFile), -1))
-            
+
         End Sub
 
         Private Sub BindPages()
 
-            drpRedirectPage.DataSource = GetPortalTabs(PortalSettings.DesktopTabs, TabId, True, True, False, True, True)
+            'drpRedirectPage.DataSource = TabController.GetPortalTabs(PortalSettings.DesktopTabs, TabId, True, True, False, True, True)
+            'Could not find the orginal paramaters to match this call... I believe this would satisfy most users needs
+            drpRedirectPage.DataSource = TabController.GetPortalTabs(PortalId, TabId, True, False)
             drpRedirectPage.DataBind()
 
         End Sub
@@ -305,7 +308,7 @@ Namespace Ventrian.PropertyAgent
                 If (value = SortDirectionType.Descending) Then
                     li.Selected = True
                 End If
-                drpSortDirection.Items.Add(li)
+                drpSortdirection.Items.Add(li)
                 drpFeaturedSortdirection.Items.Add(New ListItem(li.Text, li.Value))
                 drpPropertyManagerSortDirection.Items.Add(New ListItem(li.Text, li.Value))
                 drpSortDirectionSecondary.Items.Add(New ListItem(li.Text, li.Value))
@@ -324,7 +327,7 @@ Namespace Ventrian.PropertyAgent
                 If (value = RepeatDirection.Horizontal) Then
                     li.Selected = True
                 End If
-                drpTypesRepeatDirection.Items.Add(li)
+                drpTypesRepeatdirection.Items.Add(li)
             Next
 
         End Sub

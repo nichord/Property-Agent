@@ -8,9 +8,6 @@ Imports DotNetNuke.Entities.Modules
 Imports DotNetNuke.Entities.Portals
 Imports DotNetNuke.Services.Exceptions
 
-Imports ICSharpCode.SharpZipLib.Zip
-Imports ICSharpCode.SharpZipLib.Checksums
-Imports ICSharpCode.SharpZipLib.GZip
 
 Namespace Ventrian.PropertyAgent
 
@@ -190,43 +187,10 @@ Namespace Ventrian.PropertyAgent
 
         End Sub
 
-        Private Function ExtractFileName(ByVal path As String) As String
-
-            Dim extractPos As Integer = path.LastIndexOf("\") + 1
-            Return path.Substring(extractPos, path.Length - extractPos).Replace("/", "_").Replace("..", ".")
-
-        End Function
-
-        Public Shared Sub AddFileToZip(ByRef ZipFile As ZipOutputStream, ByVal filePath As String, ByVal fileName As String, ByVal folder As String)
-            Dim crc As Crc32 = New Crc32
-
-            'Open File Stream
-            Dim fs As FileStream = File.OpenRead(filePath)
-
-            'Read file into byte array buffer
-            Dim buffer As Byte()
-            ReDim buffer(Convert.ToInt32(fs.Length) - 1)
-            fs.Read(buffer, 0, buffer.Length)
-
-            'Create Zip Entry
-            Dim entry As ZipEntry = New ZipEntry(folder & fileName)
-            entry.DateTime = DateTime.Now
-            entry.Size = fs.Length
-            fs.Close()
-            crc.Reset()
-            crc.Update(buffer)
-            entry.Crc = crc.Value
-
-            'Compress file and add to Zip file
-            ZipFile.PutNextEntry(entry)
-            ZipFile.Write(buffer, 0, buffer.Length)
-
-        End Sub
-
         Private Sub ZipFiles()
 
             BuildFileList()
-
+            Dim filelist As String() = _files.ToArray(GetType(System.String))
             Dim CompressionLevel As Integer = 9
 
             Dim zipFile As String = Globals.HostMapPath & _folder & ".zip"
@@ -234,33 +198,17 @@ Namespace Ventrian.PropertyAgent
             Dim strmZipFile As FileStream = Nothing
             Try
 
-                strmZipFile = file.Create(zipFile)
+                strmZipFile = File.Create(zipFile)
 
-                Dim strmZipStream As ZipOutputStream = Nothing
+                Dim strmZipStream As FileStream = Nothing
                 Try
-
-                    strmZipStream = New ZipOutputStream(strmZipFile)
-                    strmZipStream.SetLevel(CompressionLevel)
-                    For Each file As String In _files
-                        Dim fullPath As String = file
-                        Dim fileName As String = ExtractFileName(file).TrimStart(Convert.ToChar("\"))
-
-                        Dim folder As String = ""
-                        If (fileName.ToLower() <> "template.xml") Then
-                            folder = fullPath.Replace(_portalSettings.HomeDirectoryMapPath & "PropertyAgent\" & _moduleID.ToString() & "\Templates\" & _template, "").Replace(fileName, "").TrimStart(Convert.ToChar("\"))
-                        End If
-
-                        If ((_portalSettings.HomeDirectoryMapPath & "PropertyAgent\" & _moduleID.ToString() & "\Templates\" & _template & "\template.xml").ToLower() <> fullPath.ToLower()) Then
-                            AddFileToZip(strmZipStream, fullPath, fileName, folder)
-                        End If
-
-                    Next
+                    Dim tzu As New TemplateZipUtils()
+                    tzu.ZipTemplateFiles(CompressionLevel, strmZipStream, filelist, _template, _moduleID, _portalSettings)
 
                 Catch ex As Exception
                     LogException(ex)
                 Finally
                     If Not strmZipStream Is Nothing Then
-                        strmZipStream.Finish()
                         strmZipStream.Close()
                     End If
                 End Try

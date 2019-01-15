@@ -6,6 +6,7 @@ Imports DotNetNuke.Services.Exceptions
 Imports DotNetNuke.Services.Localization
 
 Imports DotNetNuke.Entities.Users
+Imports DotNetNuke.Security.Permissions
 
 Namespace Ventrian.PropertyAgent
 
@@ -49,7 +50,7 @@ Namespace Ventrian.PropertyAgent
 
             For Each ID As String In Agents.Split(","c)
                 If (ID <> "") Then
-                    Dim objUser As UserInfo = UserController.GetUser(Me.PortalId, ID, True)
+                    Dim objUser As UserInfo = UserController.GetUserById(Me.PortalId, ID)
                     If (objUser IsNot Nothing) Then
                         objAgents.Add(objUser)
                     End If
@@ -85,12 +86,12 @@ Namespace Ventrian.PropertyAgent
         Private Sub BindModules()
 
             Dim objDesktopModuleController As New DesktopModuleController
-            Dim objDesktopModuleInfo As DesktopModuleInfo = objDesktopModuleController.GetDesktopModuleByModuleName("PropertyAgent")
+            Dim objDesktopModuleInfo As DesktopModuleInfo = objDesktopModuleController.GetDesktopModuleByModuleName("PropertyAgent", PortalId)
 
             If Not (objDesktopModuleInfo Is Nothing) Then
 
                 Dim objTabController As New TabController()
-                Dim objTabs As ArrayList = objTabController.GetTabs(PortalId)
+                Dim objTabs As IList = objTabController.GetTabsByPortal(PortalId)
                 For Each objTab As DotNetNuke.Entities.Tabs.TabInfo In objTabs
                     If Not (objTab Is Nothing) Then
                         If (objTab.IsDeleted = False) Then
@@ -99,7 +100,7 @@ Namespace Ventrian.PropertyAgent
                                 Dim objModule As ModuleInfo = pair.Value
                                 If (objModule.IsDeleted = False) Then
                                     If (objModule.DesktopModuleID = objDesktopModuleInfo.DesktopModuleID) Then
-                                        If PortalSecurity.IsInRoles(objModule.AuthorizedEditRoles) = True And objModule.IsDeleted = False Then
+                                        If ModulePermissionController.CanEditModuleContent(objModule) = True And objModule.IsDeleted = False Then
                                             Dim strPath As String = objTab.TabName
                                             Dim objTabSelected As TabInfo = objTab
                                             While objTabSelected.ParentId <> Null.NullInteger

@@ -409,7 +409,7 @@ Namespace Ventrian.PropertyAgent
 
             End If
 
-            If DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") = "Y" Then
+            If DotNetNuke.Entities.Controllers.HostController.Instance.GetString("UseFriendlyUrls") = "Y" Then
 
                 Dim strURL As String = ApplicationURL(_tabID)
                 Dim settings As PortalSettings = PortalController.GetCurrentPortalSettings
@@ -1292,7 +1292,7 @@ Namespace Ventrian.PropertyAgent
                 End If
 
                 objLayout.Tokens = objLayout.Template.Split(delimiter)
-                DataCache.SetCache(cacheKey, objLayout, New CacheDependency(path))
+                DataCache.SetCache(cacheKey, objLayout, New DotNetNuke.Services.Cache.DNNCacheDependency(path))
 
             End If
 
@@ -1421,12 +1421,12 @@ Namespace Ventrian.PropertyAgent
             End If
 
             If (_agent Is Nothing) Then
-                _agent = UserController.GetUser(_portalID, authorID, True)
+                _agent = UserController.GetUserById(_portalID, authorID)
             Else
                 If (_agent.UserID = authorID) Then
                     Return _agent
                 Else
-                    _agent = UserController.GetUser(_portalID, authorID, True)
+                    _agent = UserController.GetUserById(_portalID, authorID)
                 End If
             End If
 
@@ -1441,12 +1441,12 @@ Namespace Ventrian.PropertyAgent
             End If
 
             If (_modified Is Nothing) Then
-                _modified = UserController.GetUser(_portalID, modifiedID, True)
+                _modified = UserController.GetUserById(_portalID, modifiedID)
             Else
                 If (_modified.UserID = modifiedID) Then
                     Return _modified
                 Else
-                    _modified = UserController.GetUser(_portalID, modifiedID, True)
+                    _modified = UserController.GetUserById(_portalID, modifiedID)
                 End If
             End If
 
@@ -1461,12 +1461,12 @@ Namespace Ventrian.PropertyAgent
             End If
 
             If (_broker Is Nothing) Then
-                _broker = UserController.GetUser(_portalID, brokerID, True)
+                _broker = UserController.GetUserById(_portalID, brokerID)
             Else
                 If (_broker.UserID = brokerID) Then
                     Return _broker
                 Else
-                    _broker = UserController.GetUser(_portalID, brokerID, True)
+                    _broker = UserController.GetUserById(_portalID, brokerID)
                 End If
             End If
 
@@ -4053,7 +4053,7 @@ Namespace Ventrian.PropertyAgent
                         Case "ISOWNER"
                             Dim isOwner As Boolean = False
                             If (_objPage.User.Identity.IsAuthenticated) Then
-                                If (UserController.GetCurrentUserInfo.UserID = objProperty.AuthorID) Then
+                                If (UserController.Instance.GetCurrentUserInfo.UserID = objProperty.AuthorID) Then
                                     isOwner = True
                                 End If
                             End If
@@ -6076,7 +6076,9 @@ Namespace Ventrian.PropertyAgent
                                 Dim field As String = layoutArray(iPtr + 1).Substring(14, layoutArray(iPtr + 1).Length - 14)
 
                                 Dim objRoleController As New DotNetNuke.Security.Roles.RoleController
-                                Dim objRoles() As String = objRoleController.GetRolesByUser(objProperty.AuthorID, _portalID)
+                                Dim objUser As UserInfo = UserController.GetUserById(_portalID, objProperty.AuthorID)
+                                Dim objRoles() As String = objRoleController.GetUserRoles(objUser, True)
+ 
 
                                 Dim roleFound As Boolean = False
                                 For Each role As String In objRoles
@@ -6108,7 +6110,8 @@ Namespace Ventrian.PropertyAgent
                                 Dim field As String = layoutArray(iPtr + 1).Substring(17, layoutArray(iPtr + 1).Length - 17)
 
                                 Dim objRoleController As New DotNetNuke.Security.Roles.RoleController
-                                Dim objRoles() As String = objRoleController.GetRolesByUser(objProperty.AuthorID, _portalID)
+                                Dim objUser As UserInfo = UserController.GetUserById(_portalID, objProperty.AuthorID)
+                                Dim objRoles() As String = objRoleController.GetUserRoles(objUser, True)
 
                                 Dim roleFound As Boolean = False
                                 For Each role As String In objRoles
@@ -7060,7 +7063,7 @@ Namespace Ventrian.PropertyAgent
                 Next
             End If
 
-            If DotNetNuke.Entities.Host.HostSettings.GetHostSetting("UseFriendlyUrls") = "Y" Then
+            If DotNetNuke.Entities.Controllers.HostController.Instance.GetString("UseFriendlyUrls") = "Y" Then
 
                 Dim strURL As String = ApplicationURL(_tabID)
                 Dim settings As PortalSettings = PortalController.GetCurrentPortalSettings

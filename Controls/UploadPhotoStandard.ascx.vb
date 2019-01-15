@@ -46,6 +46,7 @@ Namespace Ventrian.PropertyAgent.Controls
 
         End Sub
 
+
 #End Region
 
 #Region " Event Handlers "
@@ -54,8 +55,20 @@ Namespace Ventrian.PropertyAgent.Controls
 
             Try
 
+
                 ReadQueryString()
                 cmdUploadPhoto.CssClass = PropertySettings.ButtonClass
+
+                'Dim postControl As New Control
+                'If (Page.IsPostBack) Then
+                '    postControl = GetControlThatCausedPostBack(Me.Page)
+                '    If Not (postControl Is Nothing) Then
+                '        If (postControl.ID = "cmdUploadPhoto") Then
+                '            isUpload = True
+                '        End If
+                '    End If
+                'End If
+
 
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)
@@ -262,7 +275,6 @@ Namespace Ventrian.PropertyAgent.Controls
         Private Sub valType_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valType.ServerValidate
 
             Try
-
                 If Not (txtPhoto.PostedFile Is Nothing) Then
                     Dim fileType As String = Path.GetExtension(txtPhoto.PostedFile.FileName).ToLower()
                     If (fileType = ".jpg" OrElse fileType = ".jpeg" OrElse fileType = ".gif") Then
@@ -271,7 +283,6 @@ Namespace Ventrian.PropertyAgent.Controls
                     End If
                 End If
                 args.IsValid = False
-
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)
             End Try
@@ -281,7 +292,6 @@ Namespace Ventrian.PropertyAgent.Controls
         Private Sub valPhoto_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valPhoto.ServerValidate
 
             Try
-
                 If Not (txtPhoto.PostedFile Is Nothing) Then
                     If (txtPhoto.PostedFile.ContentLength > 0) Then
                         args.IsValid = True
@@ -289,7 +299,6 @@ Namespace Ventrian.PropertyAgent.Controls
                     End If
                 End If
                 args.IsValid = False
-
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)
             End Try
@@ -299,7 +308,6 @@ Namespace Ventrian.PropertyAgent.Controls
         Protected Sub valLimitExceeded_ServerValidate(ByVal source As System.Object, ByVal args As System.Web.UI.WebControls.ServerValidateEventArgs) Handles valLimitExceeded.ServerValidate
 
             Try
-
                 Dim limit As Integer = PropertyAgentBase.GetLimit(PropertySettings.PermissionAddImages, PropertySettings.PermissionAddImagesLimit)
 
                 If (limit = Null.NullInteger) Then
@@ -314,7 +322,6 @@ Namespace Ventrian.PropertyAgent.Controls
                     args.IsValid = True
                     Return
                 End If
-
             Catch exc As Exception    'Module failed to load
                 ProcessModuleLoadException(Me, exc)
             End Try
